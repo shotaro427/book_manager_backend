@@ -1,43 +1,39 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserEntity } from 'src/user/entity/user.entity';
+import { RoomEntity } from 'src/room/entity/room.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('room')
-export class RoomEntity {
+@Entity('user')
+export class UserEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
   readonly id: number;
 
-  @ManyToMany(() => UserEntity, {
-    cascade: true,
-  })
-  @JoinTable({
-    name: 'room_user',
-  })
-  users: UserEntity[];
+  @ManyToMany(() => RoomEntity)
+  rooms: RoomEntity[];
 
   @Column()
   @ApiProperty()
   name: string;
 
+  @Column()
+  @ApiProperty()
+  email: string;
+
+  @Column()
+  @ApiProperty()
+  last_login_at: Date;
+
   @CreateDateColumn()
   @ApiProperty()
   readonly created_at: Date;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   @ApiProperty()
   readonly updated_at: Date;
-
-  @DeleteDateColumn()
-  @ApiProperty({ nullable: true })
-  deleted_at: Date | null;
 }
